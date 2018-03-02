@@ -21,7 +21,7 @@ class AppLabelRenamer(object):
     def __init__(self, native_app_label, app_label):
         self.native_app_label = native_app_label
         self.app_label = app_label
-        self.module = '.'.join([native_app_label, 'models'])
+        self.module = 'models' #'.'.join([native_app_label, 'models'])
 
     class string_with_realoaded_title(str):
         ''' tnx to Ionel Maries Cristian for http://ionelmc.wordpress.com/2011/06/24/custom-app-names-in-the-django-admin/'''
@@ -29,6 +29,7 @@ class AppLabelRenamer(object):
             instance = str.__new__(cls, value)
             instance._title = title
             return instance
+            
 
         def title(self):
             return self._title

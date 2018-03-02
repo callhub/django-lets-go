@@ -84,7 +84,12 @@ def unique_list(inlist):
     >>> unique_list(inlist)
     [1, 2, 4, 5, 6]
     """
-    return set(inlist)
+    # order preserving
+    uniques = []
+    for item in inlist:
+        if item not in uniques:
+            uniques.append(item)
+    return uniques
 
 
 def get_unique_id():
@@ -183,7 +188,10 @@ def validate_days(year, month, day):
     31
     """
     total_days = calendar.monthrange(year, month)
-    return ( total_days[1] if (day > total_days[1]) else day )
+    if day > total_days[1]:
+        return total_days[1]
+    else:
+        return day
 
 
 def month_year_range(enter_date):
@@ -440,29 +448,24 @@ def isint(str):
     return ok
 
 
-def ceil_strdate(str_date, start, hour_min=False):
+def ceil_strdate(str_date, start):
     """convert a string date to either a start or end day date"""
     if start == 'start':
-        if hour_min:
-            return datetime(int(str_date[0:4]), int(str_date[5:7]),
-                int(str_date[8:10]), int(str_date[11:13]), int(str_date[14:16]), 0, 0)
-        else:
-            return datetime(int(str_date[0:4]), int(str_date[5:7]),
-                int(str_date[8:10]), 0, 0, 0, 0)
+        return datetime(int(str_date[0:4]), int(str_date[5:7]),
+            int(str_date[8:10]), 0, 0, 0, 0)
     else:
-        if hour_min:
-            return datetime(int(str_date[0:4]), int(str_date[5:7]),
-                int(str_date[8:10]), int(str_date[11:13]), int(str_date[14:16]), 0, 0)
-        else:
-            return datetime(int(str_date[0:4]), int(str_date[5:7]),
-                int(str_date[8:10]), 23, 59, 59, 999999)
+        return datetime(int(str_date[0:4]), int(str_date[5:7]),
+            int(str_date[8:10]), 23, 59, 59, 999999)
 
 
 def get_pagination_vars(request, col_field_list, default_sort_field):
     """Return data for django pagination with sort order"""
     # Define no of records per page
     PAGE_SIZE = settings.PAGE_SIZE
-    PAGE_NUMBER = int(request.GET.get('page', 1))
+    try:
+        PAGE_NUMBER = int(request.GET['page'])
+    except:
+        PAGE_NUMBER = 1
 
     # page index
     if PAGE_NUMBER > 1:

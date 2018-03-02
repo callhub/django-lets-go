@@ -14,7 +14,6 @@ from django import template
 from django.utils.safestring import mark_safe
 from django.utils.datastructures import SortedDict
 import copy
-import json
 
 register = template.Library()
 
